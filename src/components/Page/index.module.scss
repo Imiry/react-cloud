@@ -1,0 +1,31 @@
+.pageCon {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+
+  .pageMain {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 4px 20px 0 rgba(0, 0, 0, 0.01);
+    padding: 15px;
+    box-sizing: border-box;
+
+    .mainHeader {
+      border-radius: 3px;
+      padding: 20px;
+      background-color: #fff;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    .mainCon {
+      flex: 1;
+      border-radius: 3px;
+      padding: 20px;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+  }
+
+
+}

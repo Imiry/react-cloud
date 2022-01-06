@@ -1,0 +1,42 @@
+.header-main {
+  display: flex;
+  align-items: center;
+}
+
+.header-collapse {
+  flex: 0.9;
+  display: flex;
+  align-items: center;
+}
+
+
+.header-setting {
+  flex: 0.1;
+  display: flex;
+  align-items: center;
+  // justify-content: space-between;
+  position: relative;
+
+  .header-lan {
+    position: absolute;
+    right: 90px;
+  }
+  .header-msg {
+    position: absolute;
+    right: 60px;
+  }
+  .header-set {
+    position: absolute;
+    right: 30px;
+  }
+  .header-avator {
+    position: absolute;
+    right: 0px;
+  }
+  .header-lan,
+  .header-msg,
+  .header-set,
+  .header-avator {
+    cursor: pointer;
+  }
+}
