@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Button, Tag, notification } from 'antd'
 import axios from 'axios'
+import Page from '../../../components/Page'
+
 export default function AuditList(props) {
   const [dataSource, setdataSource] = useState([])
   const { username } = JSON.parse(localStorage.getItem("token"))
@@ -93,7 +95,7 @@ export default function AuditList(props) {
   }
 
   return (
-    <div>
+    <Page>
       <Table dataSource={dataSource} size="small" columns={columns}
         pagination={{
           pageSize: 5
@@ -101,6 +103,6 @@ export default function AuditList(props) {
 
         rowKey={item => item.id}
       />
-    </div>
+    </Page>
   )
 }

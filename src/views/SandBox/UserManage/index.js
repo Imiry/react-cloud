@@ -1,19 +1,28 @@
-import { Table, Button, Modal, Switch } from 'antd'
-import React, { useState, useEffect } from 'react'
+import { Table, Button, Modal, Switch, message } from 'antd'
+import React, { useState, useEffect, useCallback } from 'react'
 import { DeleteOutlined, UnorderedListOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import UserModal from './components/UserModal'
 import { connect } from 'react-redux'
 import Page from '../../../components/Page'
+import ModalSetting from './components/ModalSetting'
+import { setTimeoutLoading } from '../../../utils'
 const { confirm } = Modal
-
+const roleObj = {
+    "1": "superadmin",
+    "2": "admin",
+    "3": "editor"
+}
 const UserList = (props) => {
     const [dataSource, setdataSource] = useState([])
-    const [isAddVisible, setisAddVisible] = useState(false)
-    const [isUpdateVisible, setisUpdateVisible] = useState(false)
+    const [isModalVisable, setIsModalVisable] = useState(false)
     const [isUpdateDisabled, setisUpdateDisabled] = useState(false)
+
+    const [currentType, setCurrentType] = useState(null)
+    const [title, setTitle] = useState('添加用户')
     const [current, setcurrent] = useState({})
     const [loading, setloading] = useState(true)
     const { getUserList, addUser, rolesData, updateUser, delUser, updateUserStatus, regionsData } = props
+    const { roleId, region, username } = JSON.parse(localStorage.getItem("token"))
+
     const columns = [
         {
             title: '区域',
@@ -65,6 +74,30 @@ const UserList = (props) => {
             }
         }
     ]
+
+    //获取用户列表数据回调
+    const getUserDatafn = useCallback(() => {
+        setloading(true)
+        getUserList().then(res => {
+            if (res.status === 200) {
+                const list = res.data.slice()
+                setdataSource(roleObj[roleId] === "superadmin" ? list : [...list.filter(item => item.username === username), ...list.filter(item => item.region === region && roleObj[roleId] === "editor")])
+                setTimeoutLoading(() => { setloading(false) }, 500)
+            } else {
+                message.error('请求出错')
+                setloading(false)
+            }
+
+        })
+    }, [getUserList, region, roleId, username])
+
+    // 获取用户列表
+    useEffect(() => {
+        getUserDatafn()
+    }, [getUserDatafn])
+
+
+
     //用户状态更新
     const handleChange = (item) => {
         item.roleState = !item.roleState
@@ -73,13 +106,25 @@ const UserList = (props) => {
             id: item.id,
             roleState: item.roleState
         }
-        updateUserStatus(params)
+        setloading(true)
+        updateUserStatus(params).then(res => {
+            if (res.status === 200) {
+                message.success('修改用户状态成功')
+                setTimeoutLoading(() => { setloading(false) }, 500)
+            } else {
+                setloading(false)
+                message.error('修改失败')
+            }
+        })
     }
+
     //删除用户
     const confirmMethod = (item) => {
         confirm({
             title: '你确定要删除?',
             icon: <ExclamationCircleOutlined />,
+            cancelText: '取消',
+            okText: '确定',
             onOk() {
                 deleteMethod(item)
             },
@@ -89,9 +134,18 @@ const UserList = (props) => {
 
     }
     const deleteMethod = (item) => {
+        setloading(true)
         setdataSource(dataSource.filter(data => data.id !== item.id))
-        delUser(item)
+        delUser(item).then(res => {
+            if (res.status === 200) {
+                message.success('删除成功')
+                setTimeoutLoading(() => { setloading(false) }, 500)
+            } else {
+                message.error('删除失败')
+            }
+        })
     }
+
     //确认添加成功
     const addFormOK = (value) => {
         let params = {
@@ -100,18 +154,30 @@ const UserList = (props) => {
             "default": false,
         }
         addUser(params).then(res => {
-            setdataSource([...dataSource, {
-                ...res,
-                role: rolesData.filter(item => item.id === value.roleId)[0]
-            }])
+            if (res.status === 201) {
+                setdataSource([...dataSource, {
+                    ...res,
+                    role: rolesData.filter(item => item.id === value.roleId)[0]
+                }])
+                getUserDatafn()
+                setIsModalVisable(false)
+                message.success('添加用户成功')
+            } else {
+                message.error('添加用户失败')
+            }
+
         })
-        setisAddVisible(false)
+
     }
 
+    //点击编辑设置
     const handleUpdate = (item) => {
+        setCurrentType('edit')
+        setTitle('编辑用户')
         setcurrent(item)
+        setIsModalVisable(true)
         setTimeout(() => {
-            setisUpdateVisible(true)
+            setIsModalVisable(true)
             if (item.roleId === 1) {
                 //禁用
                 setisUpdateDisabled(true)
@@ -139,37 +205,40 @@ const UserList = (props) => {
             id: current.id,
             value
         }
-        updateUser(params)
-        setisUpdateVisible(false)
+        updateUser(params).then(res => {
+            if (res.status === 200) {
+                message.success('编辑成功')
+                setIsModalVisable(false)
+            } else {
+                message.error('编辑失败')
+                setIsModalVisable(false)
+            }
+        })
+        setisUpdateDisabled(!isUpdateDisabled)
 
     }
 
-    const { roleId, region, username } = JSON.parse(localStorage.getItem("token"))
+    //弹窗确定按钮的回调
+    const onOk = (value, type) => {
+        type === 'edit' && updateFormOK(value)
+        type === 'add' && addFormOK(value)
+    }
 
-    //获取用户列表
-    useEffect(() => {
-        const roleObj = {
-            "1": "superadmin",
-            "2": "admin",
-            "3": "editor"
-        }
-        getUserList().then(res => {
-            setloading(true)
-            const list = res
-            setdataSource(roleObj[roleId] === "superadmin" ? list : [...list.filter(item => item.username === username), ...list.filter(item => item.region === region && roleObj[roleId] === "editor")])
-            setloading(false)
-        })
-
-    }, [roleId, region, username, getUserList])
 
     return (
         <Page
             search={
                 <Button
                     type="primary"
-                    onClick={() => { setisAddVisible(true) }}
+                    onClick={() => { setIsModalVisable(true); setTitle('添加用户'); setCurrentType('add') }}
                 >添加用户</Button>
             }
+        // buttonSlot={
+        //     <Button
+        //         type="primary"
+        //         onClick={() => { setIsModalVisable(true); setTitle('添加用户'); setCurrentType('add') }}
+        //     >添加用户</Button>
+        // }
         >
             <Table
                 loading={loading}
@@ -179,20 +248,15 @@ const UserList = (props) => {
                 rowKey={item => item.id}
                 pagination={false}
             ></Table>
-            <UserModal
-                title="添加用户"
-                visible={isAddVisible}
-                onOk={addFormOK}
-                onCancel={(value) => setisAddVisible(value)}
-            ></UserModal>
-            <UserModal
-                title="编辑用户"
-                visible={isUpdateVisible}
-                onOk={updateFormOK}
+            <ModalSetting
+                title={title}
+                type={currentType}
+                isModalVisable={isModalVisable}
+                isUpdateDisabled={isUpdateDisabled}
+                onOk={onOk}
                 currentInfo={current}
-                type="edit"
-                onCancel={(value) => setisUpdateVisible(value)}
-            ></UserModal>
+                setIsModalVisable={setIsModalVisable}
+            ></ModalSetting>
         </Page>
     )
 }

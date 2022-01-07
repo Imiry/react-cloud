@@ -18,7 +18,7 @@ const get = (url, params = {}) => {
       })
       .then(res => {
         if (res) {
-          resolve(res.data)
+          resolve(res)
         } else {
           reject(res)
         }
@@ -42,9 +42,9 @@ const post = (url, data = {}) => {
       res => {
 
         if (res) {
-          resolve(res.data)
+          resolve(res)
         } else {
-          reject(res.error)
+          reject(res)
         }
       },
       err => {
@@ -67,9 +67,9 @@ const put = (url, data = {}) => {
       res => {
 
         if (res) {
-          resolve(res.data)
+          resolve(res)
         } else {
-          reject(res.error)
+          reject(res)
         }
       },
       err => {
@@ -88,14 +88,14 @@ const put = (url, data = {}) => {
 
 const del = (url, params) => {
   return new Promise((resolve, reject) => {
-    axios.get(url, {
+    axios.delete(url, {
       params: params
     })
       .then(res => {
-        resolve(res.data);
+        resolve(res);
       })
       .catch(err => {
-        reject(err.data)
+        reject(err)
       })
   });
 }
@@ -111,9 +111,9 @@ const patch = (url, data = {}) => {
     axios.patch(url, data).then(
       res => {
         if (res) {
-          resolve(res.data)
+          resolve(res)
         } else {
-          reject(res.error)
+          reject(res)
         }
       },
       err => {

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { Table, Modal, Tag, Button } from 'antd';
 import { ExclamationCircleOutlined, DeleteOutlined } from '@ant-design/icons'
+import Page from '../../../components/Page'
 
 import AddDrawer from './components/AddDrawer';
 const { confirm } = Modal
@@ -84,10 +85,13 @@ export default function RightList() {
     },
   ];
   return (
-    <div>
-      <Button type="primary" onClick={showDrawer} style={{ marginBottom: 20 }}>添加菜单</Button>
+    <Page
+      search={
+        <Button type="primary" onClick={showDrawer}>添加菜单</Button>
+      }
+    >
       <Table loading={loading} rowKey={item => item.key} size="small" dataSource={dataSource} columns={columns} pagination={{ pageSize: 15 }} />
       <AddDrawer ref={FormRef} visible={visible} onClose={onClose} ></AddDrawer>
-    </div>
+    </Page>
   )
 }

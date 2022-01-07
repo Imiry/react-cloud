@@ -1,28 +1,33 @@
 import React from 'react'
 
-import { Form, Input, Button,message } from 'antd';
-import { UserOutlined, LockOutlined,GooglePlusOutlined} from '@ant-design/icons';
+import { Form, Input, Button, message } from 'antd';
+import { UserOutlined, LockOutlined, GooglePlusOutlined } from '@ant-design/icons';
 import './index.scss'
 import Particles from 'react-particles-js';
-import axios from 'axios'
-
+import { connect } from 'react-redux'
 
 const Login = (props) => {
+  const { loginService, queryList } = props
   const onFinish = (values) => {
-        axios.get(`http://localhost:4000/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then(res=>{
-            console.log(res.data)
-            if(res.data.length===0){
-                message.error("用户名或密码不匹配")
-            }else{
-                localStorage.setItem("token",JSON.stringify(res.data[0]))
-                props.history.push("/")
-            }
-        })
+    let params = {
+      username: values.username,
+      password: values.password
+    }
+    loginService(params).then(res => {
+      if (res.status === 200) {
+        localStorage.setItem("token", JSON.stringify(res.data[0]))
+        queryList()
+        props.history.push("/")
+        message.success("欢迎登录云!")
+      } else {
+        message.error("登录失败!")
+      }
+    })
   };
 
-  
+
   return (
-    <div style={{ background: 'rgb(35, 39, 65)', height: "100%",overflow:'hidden' }}>
+    <div style={{ background: 'rgb(35, 39, 65)', height: "100%", overflow: 'hidden' }}>
       <Particles height={document.documentElement.clientHeight} params={{
         "background": {
           "color": {
@@ -88,9 +93,9 @@ const Login = (props) => {
             }
           }
         }
-      }}/>
+      }} />
       <div className="login">
-        <div style={{textAlign:"center",fontSize:50,color:"#fff"}} ><GooglePlusOutlined /></div>
+        <div style={{ textAlign: "center", fontSize: 50, color: "#fff" }} ><GooglePlusOutlined /></div>
         <Form
           name="normal_login"
           className="login-form"
@@ -123,4 +128,7 @@ const Login = (props) => {
     </div>
   )
 }
-export default Login
+export default connect(
+  ({ user, app }) => ({ ...user, ...app }),
+  ({ user, app }) => ({ ...user, ...app })
+)(Login)

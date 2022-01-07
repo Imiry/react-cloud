@@ -11,7 +11,7 @@
     },
     {
       "username": "铁锤",
-      "password": "123",
+      "password": "12345",
       "roleState": true,
       "default": false,
       "region": "亚洲",
@@ -73,35 +73,6 @@
       "region": "亚洲",
       "roleId": 3,
       "id": 8
-    },
-    {
-      "username": "sjjjjj",
-      "password": "123",
-      "region": "",
-      "roleId": 1,
-      "roleState": true,
-      "default": false,
-      "id": 9
-    },
-    {
-      "username": "test",
-      "password": "123",
-      "roleId": 1,
-      "region": "亚洲",
-      "roleState": true,
-      "default": false,
-      "id": 10,
-      "true": ""
-    },
-    {
-      "username": "哈哈jjj",
-      "password": "123456",
-      "roleId": 2,
-      "region": "亚洲",
-      "roleState": false,
-      "default": false,
-      "id": 11,
-      "true": ""
     }
   ],
   "roles": [
@@ -197,21 +168,23 @@
       "rightId": 2,
       "key": "/user-manage/add",
       "grade": 2,
-      "pagepermisson": 0
+      "pagepermisson": 1
     },
     {
       "id": 4,
       "title": "删除用户",
       "rightId": 2,
       "key": "/user-manage/delete",
-      "grade": 2
+      "grade": 2,
+      "pagepermisson": 1
     },
     {
       "id": 5,
       "title": "修改用户",
       "rightId": 2,
       "key": "/user-manage/update",
-      "grade": 2
+      "grade": 2,
+      "pagepermisson": 1
     },
     {
       "id": 6,

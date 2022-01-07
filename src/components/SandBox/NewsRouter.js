@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios'
-// import {Spin } from 'antd'
 import Nopermission from '../../views/SandBox/Nopermission'
 import Home from '../../views/SandBox/Home';
 import RightList from '../../views/SandBox/RightManage/RightList';

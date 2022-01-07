@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Button, Table, Modal, Form, Input } from 'antd'
 import axios from 'axios'
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import Page from '../../../components/Page'
+
 const { confirm } = Modal
 export default function NewsCategory() {
   const [dataSource, setdataSource] = useState([])
@@ -170,7 +172,7 @@ export default function NewsCategory() {
 
 
   return (
-    <div>
+    <Page>
       <Table dataSource={dataSource} size="small" columns={columns}
         pagination={{
           pageSize: 5
@@ -185,6 +187,6 @@ export default function NewsCategory() {
         }}
 
       />
-    </div>
+    </Page>
   )
 }

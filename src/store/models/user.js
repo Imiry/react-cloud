@@ -2,6 +2,7 @@ import request from "../../utils/request"
 import BASEURL from "../../const/env"
 const user = {
   state: {
+    collapsed: JSON.parse(sessionStorage.getItem('collapsed')) || false,
     regionsData: [],//区域数据
     rolesData: [],//用户的权限
   },
@@ -11,6 +12,17 @@ const user = {
     }
   },
   effects: dispatch => ({
+
+    /**
+     * 登录
+     * @param
+     */
+    async loginService(payload) {
+      let url = `${BASEURL}/users?username=${payload.username}&password=${payload.password}&roleState=true&_expand=role`
+      const res = await request.get(url)
+      return res
+    },
+
 
     /**
      * 获取用户
@@ -30,7 +42,7 @@ const user = {
       let url = `${BASEURL}/regions`
       const res = await request.get(url, payload)
       this.updateState({
-        regionsData: res
+        regionsData: res?.data || []
       })
     },
 
@@ -42,7 +54,7 @@ const user = {
       let url = `${BASEURL}/roles`
       const res = await request.get(url, payload)
       this.updateState({
-        rolesData: res
+        rolesData: res.data
       })
     },
 
@@ -74,7 +86,6 @@ const user = {
      * @param
      */
     delUser(payload) {
-      console.log(payload)
       let url = `${BASEURL}/users/${payload.id}`
       const res = request.del(url)
       return res

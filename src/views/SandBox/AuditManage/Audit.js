@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Table, Button, notification } from 'antd'
+import Page from '../../../components/Page'
 
 export default function Audit() {
   const [dataSource, setdataSource] = useState([])
@@ -66,7 +67,7 @@ export default function Audit() {
     })
   }
   return (
-    <div>
+    <Page>
       <Table dataSource={dataSource} size="small" columns={columns}
         pagination={{
           pageSize: 5
@@ -74,6 +75,6 @@ export default function Audit() {
 
         rowKey={item => item.id}
       />
-    </div>
+    </Page>
   )
 }

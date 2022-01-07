@@ -21,9 +21,14 @@
     .mainCon {
       flex: 1;
       border-radius: 3px;
-      padding: 20px;
+      padding: 15px;
       background-color: #fff;
       box-sizing: border-box;
+
+      .btnSlot {
+        margin-bottom: 15px;
+        float: right;
+      }
     }
   }
 

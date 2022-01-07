@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Button, Table, Modal, notification } from 'antd'
 import axios from 'axios'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons'
+import Page from '../../../components/Page'
+
 const { confirm } = Modal
 export default function NewsDraft(props) {
   const [dataSource, setdataSource] = useState([])
@@ -102,13 +104,13 @@ export default function NewsDraft(props) {
   }
 
   return (
-    <div>
+    <Page>
       <Table dataSource={dataSource} size='small' columns={columns}
         pagination={{
           pageSize: 5
         }}
         rowKey={item => item.id}
       />
-    </div>
+    </Page>
   )
 }

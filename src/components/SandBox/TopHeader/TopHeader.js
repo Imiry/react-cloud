@@ -6,8 +6,6 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
 } from '@ant-design/icons';
-//引入connect用于连接UI组件与redux
-// import { toggleEcollpse } from '../../../redux/actions/collapsed'
 import { connect } from 'react-redux'
 import './index.scss'
 import IconFont from '../../../components/IconFont/IconFont'
@@ -16,17 +14,12 @@ const { Header } = Layout;
 
 const TopHeader = (props) => {
   const [currentLange, setCurrentLange] = useState(localStorage.getItem('lang_type'))
-  const { collapsed } = props.app
-  const changeCollapsed = () => {
-    // props.app.toggleEcollpse(!props.app.collapsed)
-    props.toggleCollapsed(collapsed)
-  }
+  const { collapsed, toggleCollapsed } = props
   const { role: { roleName } } = JSON.parse(localStorage.getItem("token"))
   const changeLanguage = (lan) => {
     localStorage.setItem('lang_type', lan)
     setCurrentLange(lan)
     intl.options.currentLocale = lan
-    // console.log(intl.options.currentLocale);
   }
   const content = (
     <Menu style={{ width: 90 }}>
@@ -50,7 +43,7 @@ const TopHeader = (props) => {
     <Header className="site-layout-background header-main" style={{ padding: '0 10px' }}>
       <div className="header-collapse">
         {
-          collapsed ? <MenuUnfoldOutlined onClick={changeCollapsed} /> : <MenuFoldOutlined onClick={changeCollapsed} />
+          collapsed ? <MenuUnfoldOutlined onClick={() => toggleCollapsed(collapsed)} /> : <MenuFoldOutlined onClick={() => toggleCollapsed(collapsed)} />
         }
       </div>
       <div className="header-setting">
@@ -79,20 +72,8 @@ const TopHeader = (props) => {
   )
 }
 
-// export default connect(
-//   state => ({
-//     collapsed: state.collapsed
-//   }),
-//   { toggleEcollpse }
-// )(withRouter(TopHeader))
 export default connect(
-  (app) => {
-    const { toggleCollapsed } = app.loading.effects.app
-    return {
-      ...app,
-      toggleCollapsed
-    }
-  },
+  ({ app }) => ({ ...app }),
   ({ app }) => ({ ...app })
 )(withRouter(TopHeader))
 

@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect} from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { PageHeader, Steps, Popover, Button, Form, Input, Select, message, notification } from 'antd'
 import style from './News.module.css'
 import axios from 'axios';
 import SimoEditor from '../../../components/SimoEdit'
+import Page from '../../../components/Page'
+
 const { Step } = Steps;
 const { Option } = Select;
 export default function NewsAdd(props) {
@@ -30,19 +32,19 @@ export default function NewsAdd(props) {
     wrapperCol: { span: 16 },
   }
   const handleNext = () => {
-    if(current === 0) {
+    if (current === 0) {
       NewsForm.current.validateFields().then(value => {
         setformInfo(value)
         setCurrent(current + 1)
-      }).catch(err => {console.log(err);})
-    }else {
+      }).catch(err => { console.log(err); })
+    } else {
       if (content === "" || content.trim() === "<p></p>") {
         message.error("新闻内容不能为空")
       } else {
         setCurrent(current + 1)
       }
     }
-    
+
   }
   const handlePrevious = () => {
     setCurrent(current - 1)
@@ -79,16 +81,16 @@ export default function NewsAdd(props) {
     })
   }, [])
   return (
-    <div>
+    <Page>
       <PageHeader
         className="site-page-header"
         title="撰写新闻"
         subTitle="WRITE NEWS FOR MANAGE"
       />
-      <Steps style={{marginTop:20}} current={current} progressDot={customDot}>
-        <Step title="基本信息"  />
-        <Step title="新闻内容"  />
-        <Step title="新闻提交"  />
+      <Steps style={{ marginTop: 20 }} current={current} progressDot={customDot}>
+        <Step title="基本信息" />
+        <Step title="新闻内容" />
+        <Step title="新闻提交" />
       </Steps>
       <div style={{ marginTop: "50px" }}>
         <div className={current === 0 ? '' : style.active}>
@@ -132,10 +134,10 @@ export default function NewsAdd(props) {
         <div className={current === 2 ? '' : style.active}></div>
 
       </div>
-      <div style={{marginTop:50}}>
+      <div style={{ marginTop: 50 }}>
         {
           current === 2 && <span>
-            <Button type="primary" onClick={() => handleSave(0)} style={{marginRight:30}}>保存草稿箱</Button>
+            <Button type="primary" onClick={() => handleSave(0)} style={{ marginRight: 30 }}>保存草稿箱</Button>
             <Button danger onClick={() => handleSave(1)} style={{ marginRight: 30 }}>提交审核</Button>
           </span>
         }
@@ -145,8 +147,8 @@ export default function NewsAdd(props) {
         {
           current > 0 && <Button onClick={handlePrevious}>上一步</Button>
         }
-        
+
       </div>
-    </div>
+    </Page>
   )
 }

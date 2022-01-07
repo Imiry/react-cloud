@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Table, Tag, Switch, Modal } from 'antd'
 import axios from 'axios'
 import { ExclamationCircleOutlined, DeleteOutlined } from '@ant-design/icons'
+import Page from '../../../components/Page'
 const { confirm } = Modal
 export default function RightList() {
     const [dataSource, setdataSource] = useState([])
@@ -90,8 +91,14 @@ export default function RightList() {
         },
     ];
     return (
-        <div>
-            <Table loading={loading} rowKey={item => item.key} size="small" dataSource={dataSource} columns={columns} pagination={{ pageSize: 10 }} />
-        </div>
+        <Page>
+            <Table
+                loading={loading}
+                rowKey={item => item.key}
+                size="small"
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false} />
+        </Page>
     )
 }

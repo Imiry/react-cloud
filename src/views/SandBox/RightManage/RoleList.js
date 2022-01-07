@@ -2,6 +2,7 @@ import { Table, Button, Modal, Tree } from 'antd'
 import React, { useState, useEffect } from 'react'
 import { DeleteOutlined, UnorderedListOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
+import Page from '../../../components/Page'
 const { confirm } = Modal
 export default function RoleList() {
     const [dataSource, setdataSource] = useState([])
@@ -98,9 +99,8 @@ export default function RoleList() {
         })
     }, [])
     return (
-        <div>
-            <Table loading={loading} size="small" dataSource={dataSource} columns={columns} rowKey={item => item.id}></Table>
-
+        <Page>
+            <Table loading={loading} size="small" pagination={false} dataSource={dataSource} columns={columns} rowKey={item => item.id}></Table>
             <Modal title="权限分配" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 <Tree
                     checkable
@@ -110,6 +110,6 @@ export default function RoleList() {
                     treeData={rightList}
                 />
             </Modal>
-        </div>
+        </Page>
     )
 }
