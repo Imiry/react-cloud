@@ -1,0 +1,80 @@
+.panleCon {
+  background-color: rgba(241, 245, 247, 0.9);
+  height: 140px;
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .conLeft {
+    height: 100%;
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    .leftNum {
+      font-size: 25px;
+      font-weight: 500;
+    }
+
+    .leftLead {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+      align-items: center;
+    }
+  }
+
+  .conright {
+    height: 100%;
+    flex: 0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .panleImg {
+      width: 90%;
+      height: 90%;
+    }
+  }
+}
+
+.right_container {
+  padding: 20px;
+  background-color: rgba(241, 245, 247, 0.9);
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.left_container {
+  padding: 20px;
+  background-color: rgba(241, 245, 247, 0.9);
+  box-sizing: border-box;
+  border-radius: 5px;
+  display: flex;
+
+  .set_left {
+    flex: 0.4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    .set_left_item {
+      display: flex;
+      justify-content: space-around;
+      align-content: center;
+      padding: 10px;
+      box-sizing: border-box;
+      .item_icon {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .set_right {
+    flex: 0.6
+  }
+}
